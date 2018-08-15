@@ -12,18 +12,21 @@ class ViewController: UICollectionViewController {
 
     let cellTitles = [
         "Getting started with Apple ML",
-        "Demystifying self-sizing cells"
+        "Demystifying self-sizing cells",
+        "Really long cell title, longer than anyone could reasonably anticipate, hopefully it also displays correctly",
+        "Another cell",
+        "Yet another, we need two rows"
     ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "CustomCell")
+        collectionView?.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "CustomCell")
 
-        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 220, height: 220)
             flowLayout.sectionInset = UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40)
-            flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
+            flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize
         }
     }
 
@@ -32,7 +35,7 @@ class ViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.cellTitles.count
+        return cellTitles.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,7 +43,7 @@ class ViewController: UICollectionViewController {
             fatalError("Unexpected cell class")
         }
 
-        cell.title = self.cellTitles[indexPath.row]
+        cell.title = cellTitles[indexPath.row]
 
         return cell
     }
