@@ -13,7 +13,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     var title: String? {
         didSet {
             if let title = title {
-                configure(withTitle: title)
+                self.configure(withTitle: title)
             }
         }
     }
@@ -30,18 +30,46 @@ class CustomCollectionViewCell: UICollectionViewCell {
         installConstraints()
     }
 
-    func installConstraints() {
-        contentView.addSubview(self.titleLabel)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-        titleLabel.widthAnchor.constraint(equalToConstant: 220.0).isActive = true
-        
-        // if you want a minimum cell height
-        //titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 220.0).isActive = true
+        self.configureConstraints()
+    }
 
-        titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        self.configureConstraints()
+    }
+
+    /// The cell's size is defined by the label within it, which is sized to be at least 220pt x 220pt.
+    /// It will grow with the label's content
+    func configureConstraints() {
+        self.contentView.addSubview(self.titleLabel)
+
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let height = self.titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 220)
+        height.priority = .required - 1
+
+        let width = self.titleLabel.widthAnchor.constraint(equalToConstant: 220)
+        width.priority = .required - 1
+
+        NSLayoutConstraint.activate([
+            height,
+            width,
+            self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        ])
+    }
+
+    /// This is a good place to put breakpoints
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+
+        return size
     }
 
     private lazy var titleLabel: UILabel = {
@@ -58,8 +86,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }()
 
     private func configure(withTitle title: String) {
-        titleLabel.text = title
+        self.titleLabel.text = title
 
-        setNeedsLayout()
+        self.setNeedsLayout()
     }
 }
