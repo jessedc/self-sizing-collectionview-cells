@@ -43,7 +43,8 @@ class ViewController: UICollectionViewController {
         self.collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: self.cellIdentifier)
 
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 25, height: 30)
+            // width: 220 allows the height dimension to be flexible and the cell to size correctly
+            flowLayout.estimatedItemSize = CGSize(width: 220, height: 30)
             flowLayout.sectionInset = UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40)
             flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
         }
